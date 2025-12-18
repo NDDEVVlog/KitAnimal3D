@@ -1,4 +1,4 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +9,6 @@ public class AnimalMotor : MonoBehaviour
     private Animator _animator;
     private AnimalStats _stats;
 
-    public float CurrentSpeed; 
     public void Initialize(AnimalStats stats)
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -21,64 +20,71 @@ public class AnimalMotor : MonoBehaviour
     }
 
     private void Update()
-    {   
-        CurrentSpeed = _agent.velocity.magnitude;
-        _animator.SetFloat(AnimHash.Speed, _agent.velocity.magnitude);
+    {
+        if (_agent.enabled)
+        {
+            _animator.SetFloat(AnimHash.Speed, _agent.velocity.magnitude);
+        }
     }
 
-    public IEnumerator MoveTo(Vector3 target, bool sprint)
+    public async UniTask MoveTo(Vector3 target, bool sprint)
     {
         _agent.enabled = true;
         _agent.isStopped = false;
         _agent.speed = sprint ? _stats.sprintSpeed : _stats.walkSpeed;
         _agent.SetDestination(target);
 
-        // Wait until path is calculated
-        while (_agent.pathPending) yield return null;
+        var token = this.GetCancellationTokenOnDestroy();
 
-        // Wait until reached
-        while (_agent.remainingDistance > _agent.stoppingDistance)
-        {
-            yield return null;
-        }
+        // Async wait for path calculation
+        await UniTask.WaitUntil(() => !_agent.pathPending, cancellationToken: token);
+        
+        // Async wait for arrival
+        await UniTask.WaitUntil(() => _agent.remainingDistance <= _agent.stoppingDistance, cancellationToken: token);
 
         _agent.velocity = Vector3.zero;
         _agent.isStopped = true;
     }
 
-    public IEnumerator PerformJump(Vector3 target)
+    public async UniTask PerformJump(Vector3 target)
     {
         _agent.enabled = false;
-        
         _animator.SetBool(AnimHash.Grounded, false);
         _animator.SetTrigger(AnimHash.Jump);
 
         Vector3 startPos = transform.position;
         float elapsed = 0f;
+        var token = this.GetCancellationTokenOnDestroy();
 
         while (elapsed < _stats.jumpDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / _stats.jumpDuration;
-
-            // Parabolic movement
+            
             float height = Mathf.Sin(Mathf.PI * t) * _stats.jumpHeight;
             Vector3 currentPos = Vector3.Lerp(startPos, target, t);
             currentPos.y += height;
 
             transform.position = currentPos;
-            
-            // Rotate towards target
-            Vector3 dir = (target - startPos).normalized;
-            if(dir != Vector3.zero) 
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 15f);
-
-            yield return null;
+            await UniTask.NextFrame(token);
         }
 
         transform.position = target;
         _animator.SetBool(AnimHash.Grounded, true);
+        _agent.enabled = true;
+    }
+
+    public async UniTask PerformInteraction(Interactable interactable)
+    {
+        _agent.enabled = false;
         
+        _animator.SetInteger(AnimHash.InteractionType, interactable.AnimationTypeID);
+        _animator.SetTrigger(AnimHash.Interact);
+
+        // Await the interaction logic directly
+        await interactable.ExecuteInteraction(this);
+
+        _animator.SetTrigger(AnimHash.Grounded); 
         _agent.enabled = true;
     }
 }

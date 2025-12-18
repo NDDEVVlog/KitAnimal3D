@@ -1,0 +1,48 @@
+
+.toolbar-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 4px 4px 4px; 
+    padding-top: 10px;
+    height: 22px;
+}
+
+.toolbar-dropdown-button {
+    height: 20px;
+    min-width: 60px;
+    padding: 0 8px;
+    border-width: 2px;
+    border-radius: 4px;
+    border-color: rgba(255, 255, 255, 0.15);
+
+    background-color: transparent;
+    
+
+    -unity-text-align: middle-center; 
+    
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    color: var(--toolbar-text-color);
+    font-size: 12px;
+
+    -unity-font-style: bold;
+}
+
+
+
+.toolbar-dropdown-button:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+
+.toolbar-dropdown-button:active { 
+    background-color: rgba(255, 255, 255, 0.20);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+
+:root {
+    --toolbar-text-color: #e0e0e0;
+}

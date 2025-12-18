@@ -1,4 +1,4 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimalMotor))]
@@ -10,9 +10,7 @@ public class AnimalBrain : MonoBehaviour
     [SerializeField] private InteractionUI _uiManager;
 
     private AnimalMotor _motor;
-    private StageNode _currentNode;
-    private bool _hasSelectedAction;
-    private PathConnection _selectedConnection;
+    [SerializeField] private StageNode _currentNode;
 
     private void Awake()
     {
@@ -26,56 +24,79 @@ public class AnimalBrain : MonoBehaviour
         {
             transform.position = _startingNode.Position;
             _currentNode = _startingNode;
-            StartCoroutine(GameLoop());
+            
+            // Fire and forget the async loop
+            GameLoop().Forget();
         }
     }
 
-    private IEnumerator GameLoop()
+    private async UniTaskVoid GameLoop()
     {
+        // Get token to stop loop if object is destroyed
+        var token = this.GetCancellationTokenOnDestroy();
+
         while (_currentNode != null && !_currentNode.IsFinalNode)
         {
             // 1. Wait for player selection
-            yield return WaitForSelection();
+            PathConnection selectedConnection = await WaitForSelection(token);
 
             // 2. Hide UI
             _uiManager.Hide();
 
             // 3. Execute Movement
-            yield return ExecuteAction(_selectedConnection);
+            await ExecuteAction(selectedConnection);
 
             // 4. Update Node
-            _currentNode = _selectedConnection.targetNode;
+            _currentNode = selectedConnection.targetNode;
         }
     }
 
-    private IEnumerator WaitForSelection()
+    private async UniTask<PathConnection> WaitForSelection(System.Threading.CancellationToken token)
     {
-        _hasSelectedAction = false;
-        
-        _uiManager.ShowOptions(_currentNode.Connections, (choice) => 
-        {
-            _selectedConnection = choice;
-            _hasSelectedAction = true;
-        });
+        // Create a source that completes when the UI is clicked
+        var completionSource = new UniTaskCompletionSource<PathConnection>();
 
-        yield return new WaitUntil(() => _hasSelectedAction);
+        // Register cancellation in case object is destroyed while waiting
+        using (token.Register(() => completionSource.TrySetCanceled()))
+        {
+            _uiManager.ShowOptions(_currentNode.Connections, (choice) => 
+            {
+                // This fulfills the task
+                completionSource.TrySetResult(choice);
+            });
+
+            return await completionSource.Task;
+        }
     }
 
-    private IEnumerator ExecuteAction(PathConnection connection)
+    private async UniTask ExecuteAction(PathConnection connection)
     {
         switch (connection.actionType)
         {
             case ActionType.Jump:
-                yield return _motor.PerformJump(connection.targetNode.Position);
+                await _motor.PerformJump(connection.targetNode.Position);
                 break;
             
             case ActionType.Sprint:
-                yield return _motor.MoveTo(connection.targetNode.Position, true);
+                await _motor.MoveTo(connection.targetNode.Position, true);
+                break;
+
+            case ActionType.Interact:
+                Debug.Log("Executing Interaction Action : " + connection.interactionObject.name);
+                if (connection.interactionObject != null)
+                {
+                    await _motor.MoveTo(connection.interactionObject.transform.position, false);
+                    await _motor.PerformInteraction(connection.interactionObject);
+                }
+                else
+                {
+                    Debug.LogError("Interaction selected but no Object assigned in StageNode!");
+                }
                 break;
 
             case ActionType.Walk:
             default:
-                yield return _motor.MoveTo(connection.targetNode.Position, false);
+                await _motor.MoveTo(connection.targetNode.Position, false);
                 break;
         }
     }
