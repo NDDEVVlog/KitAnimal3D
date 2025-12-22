@@ -1,54 +1,96 @@
-using System;
+    using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using TMPro; // Assuming TextMeshPro, use Text if standard UI
+using TMPro;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class InteractionUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _buttonPrefab;
-    [SerializeField] private Transform _container;
+    [Header("Prefabs")]
+    [SerializeField] private GameObject _targetButtonPrefab;
+    [SerializeField] private GameObject _moveButtonPrefab;
+
+    [Header("Containers")]
+    [SerializeField] private Transform _targetContainer;
+    [SerializeField] private Transform _moveContainer;
+    [SerializeField] private Button _confirmButton;
     [SerializeField] private CanvasGroup _canvasGroup;
 
-    private List<GameObject> _activeButtons = new List<GameObject>();
+    private NodeConnection? _selectedTarget;
+    private AnimalMoveData _selectedMove;
+    private UniTaskCompletionSource<(NodeConnection, AnimalMoveData)> _selectionSource;
 
-    public void ShowOptions(IEnumerable<PathConnection> options, Action<PathConnection> onSelected)
+    public async UniTask<(NodeConnection, AnimalMoveData)> WaitForSelection(
+        IEnumerable<NodeConnection> targets, 
+        IEnumerable<AnimalMoveData> moves, 
+        CancellationToken token)
     {
-        ClearButtons();
+        InitializeUI(targets, moves);
         ToggleCanvas(true);
 
-        foreach (var option in options)
+        _selectionSource = new UniTaskCompletionSource<(NodeConnection, AnimalMoveData)>();
+
+        using (token.Register(() => _selectionSource.TrySetCanceled()))
         {
-            CreateButton(option, onSelected);
+            try
+            {
+                return await _selectionSource.Task;
+            }
+            finally
+            {
+                ToggleCanvas(false);
+            }
         }
     }
 
-    public void Hide()
+    private void InitializeUI(IEnumerable<NodeConnection> targets, IEnumerable<AnimalMoveData> moves)
     {
-        ToggleCanvas(false);
-        ClearButtons();
-    }
+        ClearUI();
+        _confirmButton.interactable = false;
 
-    private void CreateButton(PathConnection data, Action<PathConnection> callback)
-    {
-        GameObject btnObj = Instantiate(_buttonPrefab, _container);
-        Button btn = btnObj.GetComponent<Button>();
-        TextMeshProUGUI txt = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (txt != null) txt.text = $"{data.actionType}: {data.optionName}";
-
-        btn.onClick.AddListener(() => 
+        foreach (var target in targets)
         {
-            callback?.Invoke(data);
-        });
+            var btnObj = Instantiate(_targetButtonPrefab, _targetContainer);
+            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = target.label;
+            btnObj.GetComponent<Button>().onClick.AddListener(() => {
+                _selectedTarget = target;
+                ValidateSelection();
+            });
+        }
 
-        _activeButtons.Add(btnObj);
+        foreach (var move in moves)
+        {
+            var btnObj = Instantiate(_moveButtonPrefab, _moveContainer);
+            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = move.moveName;
+            btnObj.GetComponent<Button>().onClick.AddListener(() => {
+                _selectedMove = move;
+                ValidateSelection();
+            });
+        }
+
+        _confirmButton.onClick.RemoveAllListeners();
+        _confirmButton.onClick.AddListener(() => {
+            if (_selectedTarget.HasValue && _selectedMove != null)
+            {
+                _selectionSource.TrySetResult((_selectedTarget.Value, _selectedMove));
+            }
+        });
     }
 
-    private void ClearButtons()
+    private void ValidateSelection()
     {
-        foreach (var btn in _activeButtons) Destroy(btn);
-        _activeButtons.Clear();
+        _confirmButton.interactable = _selectedTarget.HasValue && _selectedMove != null;
+    }
+
+    public void Hide() => ToggleCanvas(false);
+
+    private void ClearUI()
+    {
+        foreach (Transform child in _targetContainer) Destroy(child.gameObject);
+        foreach (Transform child in _moveContainer) Destroy(child.gameObject);
+        _selectedTarget = null;
+        _selectedMove = null;
     }
 
     private void ToggleCanvas(bool visible)
