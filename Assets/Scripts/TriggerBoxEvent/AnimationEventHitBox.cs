@@ -14,7 +14,7 @@ public class AnimationEventHitBox : MonoBehaviour
             hitBox = GetComponent<Collider>();
         }
         hitBox.enabled = true;
-        Debug.Log("HitBox Enabled");
+
         
     }
 
@@ -25,7 +25,7 @@ public class AnimationEventHitBox : MonoBehaviour
             hitBox = GetComponent<Collider>();
         }
         hitBox.enabled = false;
-        Debug.Log("HitBox Disabled");
+
     }
 
 
