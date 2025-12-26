@@ -8,9 +8,12 @@ public class StageModule : MonoBehaviour
     [SerializeField] private List<StageNode> _exitNodes = new List<StageNode>();
     [SerializeField] private string _moduleName;
 
+
     public StageNode EntryNode => _entryNode;
     public IReadOnlyList<StageNode> ExitNodes => _exitNodes;
     public string ModuleName => string.IsNullOrEmpty(_moduleName) ? name : _moduleName;
+
+
 
     private void OnDrawGizmos()
     {

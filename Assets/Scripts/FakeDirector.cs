@@ -1,31 +1,68 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System.Collections.Generic;
+
+[System.Serializable]
+public struct CinmachineKeyBind
+{
+    public KeyCode key;
+    public CinemachineCamera camera;
+
+    public CinmachineKeyBind(KeyCode key, CinemachineCamera camera)
+    {
+        this.key = key;
+        this.camera = camera;
+    }
+}
+
 public class FakeDirector : MonoBehaviour
-{   
-    public CinemachineCamera cinemachineCamera;
-    public CinemachineCamera cinemachineCamera2;
-    public Material material1;
-    public Renderer targetRenderer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+{
+    public List<CinmachineKeyBind> cameras;
+
+    private CinemachineCamera currentCamera;
+
+    public GameObject mainCharacter;
+
     void Start()
     {
+        // Disable all cameras at start
+        foreach (var cam in cameras)
+        {
+            if (cam.camera != null)
+                cam.camera.gameObject.SetActive(false);
+        }
 
-        material1 = targetRenderer.material;
+        // Optional: activate the first camera as default
+        if (cameras.Count > 0 && cameras[0].camera != null)
+        {
+            ActivateCamera(cameras[0].camera);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {   
-            var temp = cinemachineCamera.Priority;
-            cinemachineCamera.Priority = cinemachineCamera2.Priority;
-            cinemachineCamera2.Priority = temp;
-        }
-        if (Input.GetKeyDown(KeyCode.M))
+        foreach (var bind in cameras)
         {
-            material1.SetFloat("Process",Mathf.Lerp(1,0,Time.deltaTime));
+            if (Input.GetKeyDown(bind.key))
+            {
+                ActivateCamera(bind.camera);
+                break;
+            }
         }
-        
+    }
+
+    private void ActivateCamera(CinemachineCamera cam)
+    {
+        if (cam == null || cam == currentCamera)
+            return;
+
+        // Disable previous camera
+        if (currentCamera != null)
+            currentCamera.gameObject.SetActive(false);
+
+        // Enable new camera
+        cam.gameObject.SetActive(true);
+        cam.Target.TrackingTarget = mainCharacter.transform;
+        currentCamera = cam;
     }
 }

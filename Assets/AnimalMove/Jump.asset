@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Jump
   m_EditorClassIdentifier: Assembly-CSharp::AnimalMoveData
   moveName: Jump
-  moveIcon: {fileID: 0}
+  moveIcon: {fileID: 21300000, guid: c43d772f28306804c987c7cc3889ed52, type: 3}
   actionType: 2
   speedMultiplier: 1.5
