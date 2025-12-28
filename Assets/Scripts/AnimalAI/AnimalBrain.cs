@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -6,9 +5,10 @@ using UnityEngine;
 public class AnimalBrain : MonoBehaviour
 {
     [SerializeField] private AnimalStats _stats;
-    [SerializeField] private StageNode _startingNode;
-    [SerializeField] private InteractionUI _uiManager;
+    [SerializeField] public StageNode _startingNode;
+    [SerializeField] public InteractionUI _uiManager;
     [SerializeField] private List<AnimalMoveData> _availableMoves;
+    [SerializeField] private ControlMode _currentControlMode = ControlMode.Manual;
 
     private AnimalMotor _motor;
     private StageNode _currentNode;
@@ -28,8 +28,10 @@ public class AnimalBrain : MonoBehaviour
         while (_currentNode != null && !_currentNode.IsFinalNode)
         {
             (NodeConnection connection, AnimalMoveData move) = await _uiManager.WaitForSelection(
+                _currentNode.Position,
                 _currentNode.Connections, 
                 _availableMoves, 
+                _currentControlMode,
                 token
             );
 

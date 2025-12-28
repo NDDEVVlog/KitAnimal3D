@@ -1,44 +1,24 @@
 using System;
 using UnityEngine;
 
-//this gonna be remove later s
 public enum ActionType
 {
+    None, // Mặc định: Không yêu cầu gì cả (hoặc hành động rỗng)
     Walk,
     Sprint,
     Jump,
-    Interact // Added this
+    Interact
 }
 
-//this gonna be remove later since we have AnimalMoveData scriptable object now or going to be merge
 [Serializable]
 public struct AnimalStats
 {
     [Min(0f)] public float walkSpeed;
-    [Min(0f)] public float sprintSpeed;
     [Min(0f)] public float jumpHeight;
     [Min(0f)] public float jumpDuration;
 
     public bool isDead;
 }
-
-[Serializable]
-public struct PathConnection
-{
-    public string optionName;
-    public ActionType actionType;
-    public StageNode targetNode;
-    public Interactable interactionObject; // Reference to the specific object (Slide, Bike, NPC)
-    
-}
-
-public enum StageNodeModulePoint
-{
-    Entry,
-    Exit,
-    Default
-}
-
 
 public static class AnimHash
 {
@@ -46,6 +26,6 @@ public static class AnimHash
     public static readonly int Jump = Animator.StringToHash("Jump");
     public static readonly int Grounded = Animator.StringToHash("Grounded");
     public static readonly int Die = Animator.StringToHash("Die");
-    public static readonly int Interact = Animator.StringToHash("Interact"); // Trigger
-    public static readonly int InteractionType = Animator.StringToHash("InteractionType"); // Int for BlendTree (0=Slide, 1=Bike, etc)
+    public static readonly int Interact = Animator.StringToHash("Interact");
+    public static readonly int InteractionType = Animator.StringToHash("InteractionType");
 }

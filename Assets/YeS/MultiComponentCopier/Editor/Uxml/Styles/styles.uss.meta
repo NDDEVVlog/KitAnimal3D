@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0578d59024825b84a86f02704a93fa94
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 12385, guid: 0000000000000000e000000000000000, type: 0}
+  disableValidation: 0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290076
+  packageName: Multi Component Copier
+  packageVersion: 1.0
+  assetPath: Assets/YeS/MultiComponentCopier/Editor/Uxml/Styles/styles.uss
+  uploadId: 758005

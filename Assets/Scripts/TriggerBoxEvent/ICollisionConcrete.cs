@@ -42,7 +42,7 @@ public class ApplyForceEffect : ICollisionEffect
                 // Tác động lực
                 targetRb.AddForce(forceDirection * forceMagnitude, ForceMode.Impulse);
                 
-                Debug.DrawRay(targetRb.transform.position, forceDirection * 5f, Color.magenta, 2f);
+                Debug.DrawRay(targetRb.transform.position, forceDirection * 5f, Color.magenta, 10f);
             }
         }
     }

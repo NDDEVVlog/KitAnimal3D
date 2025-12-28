@@ -138,13 +138,13 @@ public class StageLinkerTool : EditorTool
         {
             connection.targetType = ConnectionTargetType.Module;
             connection.targetModule = targetModule;
-            connection.label = $"To {targetModule.ModuleName}";
+            //connection.label = $"To {targetModule.ModuleName}";
         }
         else if (targetNode != null)
         {
             connection.targetType = ConnectionTargetType.Node;
             connection.targetNode = targetNode;
-            connection.label = $"To {targetNode.name}";
+            //connection.label = $"To {targetNode.name}";
         }
 
         if (connection.GetResolvedTarget() != null)

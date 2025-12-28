@@ -14,6 +14,10 @@ public class RagdollController : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        if(animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
         mainCollider = GetComponent<Collider>();
         mainRigidbody = GetComponent<Rigidbody>();
 

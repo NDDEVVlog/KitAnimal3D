@@ -2,19 +2,20 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class AnimalMotor : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private Animator _animator;
     private AnimalStats _stats;
 
-
-
     public void Initialize(AnimalStats stats)
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        if(_animator == null)
+            _animator = GetComponentInChildren<Animator>();
+
         _stats = stats;
         _stats.isDead = false;
         
@@ -35,7 +36,7 @@ public class AnimalMotor : MonoBehaviour
         if(_stats.isDead) return;
         _agent.enabled = true;
         _agent.isStopped = false;
-        _agent.speed = speed; // Use the speed provided by MoveData
+        _agent.speed = speed; 
         _agent.SetDestination(target);
 
         var token = this.GetCancellationTokenOnDestroy();
@@ -77,11 +78,9 @@ public class AnimalMotor : MonoBehaviour
     public async UniTask PerformInteraction(Interactable interactable)
     {
         _agent.enabled = false;
-        
         _animator.SetInteger(AnimHash.InteractionType, interactable.AnimationTypeID);
         _animator.SetTrigger(AnimHash.Interact);
 
-        // Await the interaction logic directly
         await interactable.ExecuteInteraction(this);
 
         _animator.SetTrigger(AnimHash.Grounded); 

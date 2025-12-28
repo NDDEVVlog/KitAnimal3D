@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour
                 {
                     targetType = ConnectionTargetType.Module,
                     targetModule = next,
-                    label = $"To {next.ModuleName}"
+                    //label = $"To {next.ModuleName}"
                 });
             }
         }

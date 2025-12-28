@@ -1,0 +1,66 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="root">
+    
+        <ui:VisualElement name="left-panel" class="panel">
+            <ui:VisualElement class="title">
+                <ui:Label text="Copy From" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="top-content">
+                <ui:VisualElement name="object-field-container"/>
+            </ui:VisualElement>
+
+            <ui:Label text="Components" class="sub-title" />
+
+            <ui:MultiColumnListView name="copy-multi-column-list" reorderable="false">
+                <ui:Columns >
+                    <ui:Column name="copy" title="Copy?"  max-width="100" min-width="100" width="100"/>
+                    <ui:Column name="copy-name" title="Name" max-width="250" min-width="250" width="250"/>
+                </ui:Columns>
+
+            </ui:MultiColumnListView>
+
+        </ui:VisualElement>
+
+        <ui:VisualElement class="line"/>
+
+        <ui:VisualElement name="right-panel" class="panel">
+            <ui:VisualElement class="title">
+                <ui:Label text="Copy To" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="top-content" >
+                <ui:Label text="Copy To Gameobjects" class="scroll-title"/>
+
+                <ui:VisualElement name="label-drop-here" >
+                        <ui:Label text= "Drop Gameobjects here!"/>
+                </ui:VisualElement>
+                
+                <ui:ScrollView  
+                    show-border="true"
+                    name="to-object-list-view"
+                    fixed-item-height="18"
+                    reorderable="false"
+                />
+
+                <ui:VisualElement class="buttons" style="flex-direction: row;">
+                    <ui:Button name="button-add-item" class="add-remove-button" text="+"/>
+                    <ui:Button name="button-remove-item" class="add-remove-button" text="-"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:Label text="Components" class="sub-title" />
+
+            <ui:ScrollView  
+                show-border="true"
+                name="to-components-scroll-view"
+                fixed-item-height="18"
+                reorderable="false"
+            />
+
+        </ui:VisualElement>
+
+        <ui:Button text="RUN!" name="button-run" />
+
+    </ui:VisualElement>
+</ui:UXML>

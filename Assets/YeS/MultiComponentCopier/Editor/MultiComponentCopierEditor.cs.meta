@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9da20c5ab31056c46aac59c1ade9eb46
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 290076
+  packageName: Multi Component Copier
+  packageVersion: 1.0
+  assetPath: Assets/YeS/MultiComponentCopier/Editor/MultiComponentCopierEditor.cs
+  uploadId: 758005
