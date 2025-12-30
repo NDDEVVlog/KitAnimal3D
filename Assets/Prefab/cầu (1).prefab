@@ -48,8 +48,8 @@ MonoBehaviour:
   - targetType: 0
     targetNode: {fileID: 7733685120548329046}
     targetModule: {fileID: 0}
-    label: To SlideEnd
     interactionObject: {fileID: 3134639334711436837}
+    specificActionRequirement: 4
 --- !u!1 &1644854704949165181
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,15 +327,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 523c7ec71a52da0428ca519e2b24369f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.3079987
+      value: 0.11782825
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 523c7ec71a52da0428ca519e2b24369f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.4472501
+      value: -0.96
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 523c7ec71a52da0428ca519e2b24369f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.46
+      value: 22.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 523c7ec71a52da0428ca519e2b24369f, type: 3}
       propertyPath: m_LocalRotation.w

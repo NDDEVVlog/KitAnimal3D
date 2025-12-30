@@ -2312,7 +2312,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stats:
     walkSpeed: 5
-    sprintSpeed: 20
     jumpHeight: 5
     jumpDuration: 1
     isDead: 0
@@ -2323,6 +2322,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b51dbcbba7a061945ab7a3d06f4af881, type: 2}
   - {fileID: 11400000, guid: 72f49f9538e6bdf43a292cbe787b2379, type: 2}
   - {fileID: 11400000, guid: 0072ca9164a06034f9975ec444d6cb3d, type: 2}
+  _currentControlMode: 1
 --- !u!136 &4191889298833782697
 CapsuleCollider:
   m_ObjectHideFlags: 0

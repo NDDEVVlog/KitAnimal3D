@@ -39,6 +39,17 @@ public class FakeDirector : MonoBehaviour
         }
     }
 
+    public void SetTarget(GameObject target)
+    {
+        foreach (var bind in cameras)
+        {
+            if (bind.camera != null)
+            {
+                bind.camera.Target.TrackingTarget = target.transform;
+            }
+        }
+    }
+
     void Update()
     {
         foreach (var bind in cameras)

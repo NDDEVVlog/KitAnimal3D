@@ -19,5 +19,7 @@ public class StageNodeSpawnPoint : StageNode
         spawned.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
         spawned.GetComponent<AnimalBrain>()._startingNode = this;
         spawned.GetComponent<AnimalBrain>()._uiManager = uiManager;
+        fakeDirector.SetTarget(spawned);
+        
     }
 }
