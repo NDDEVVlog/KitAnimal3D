@@ -32,6 +32,11 @@ public class RagdollController : MonoBehaviour
     public void Die()
     {   GetComponent<NavMeshAgent>().enabled = false;
         ToggleRagdoll(true);
+        if(TurnManager.Instance !=null)
+        {
+            TurnManager.Instance.EndTurn();
+        }
+        GetComponent<AnimalMotor>().Die();
     }
 
     void ToggleRagdoll(bool isDead)

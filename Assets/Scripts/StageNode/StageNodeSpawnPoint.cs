@@ -6,6 +6,7 @@ public class StageNodeSpawnPoint : StageNode
     public GameObject spawnedObject;
     public FakeDirector fakeDirector;
     public InteractionUI uiManager;
+    public ControlMode controlMode;
     public void Start()
     {
         fakeDirector = FindFirstObjectByType<FakeDirector>();
@@ -19,6 +20,7 @@ public class StageNodeSpawnPoint : StageNode
         spawned.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
         spawned.GetComponent<AnimalBrain>()._startingNode = this;
         spawned.GetComponent<AnimalBrain>()._uiManager = uiManager;
+        spawned.GetComponent<AnimalBrain>()._currentControlMode = controlMode;
         fakeDirector.SetTarget(spawned);
         
     }

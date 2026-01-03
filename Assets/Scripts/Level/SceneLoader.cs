@@ -13,6 +13,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private Image _loadingBar;
     [SerializeField] private float _fadeDuration = 0.5f;
     public GameObject spawnGameobject;
+    public ControlMode currentControlMode;
 
     public void SetSpawnGameobject(GameObject obj)
     {
@@ -100,6 +101,7 @@ public class SceneLoader : MonoBehaviour
         {
             spawnPoint.spawnedObject = spawnGameobject; // Reset any previous reference
             spawnPoint.SpawnAtPoint();
+            spawnPoint.controlMode = currentControlMode;
         }
         _canvasGroup.DOFade(0f, _fadeDuration)
             .SetUpdate(true)

@@ -2,27 +2,43 @@ using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections.Generic;
 
+
+public enum TargetObject
+{
+    Player,
+    Object
+}
 [System.Serializable]
 public struct CinmachineKeyBind
 {
     public KeyCode key;
     public CinemachineCamera camera;
+    public TargetObject targetObject;
 
-    public CinmachineKeyBind(KeyCode key, CinemachineCamera camera)
+    public CinmachineKeyBind(KeyCode key, CinemachineCamera camera,TargetObject targetObject)
     {
         this.key = key;
         this.camera = camera;
+        this.targetObject= targetObject;
     }
 }
 
 public class FakeDirector : MonoBehaviour
-{
+{   
+    public static FakeDirector Instance { get; private set; }
     public List<CinmachineKeyBind> cameras;
 
     private CinemachineCamera currentCamera;
 
     public GameObject mainCharacter;
+    public GameObject Target;
 
+    private void Awake()
+    {
+       
+        Instance = this;
+
+    }
     void Start()
     {
         // Disable all cameras at start
@@ -40,7 +56,8 @@ public class FakeDirector : MonoBehaviour
     }
 
     public void SetTarget(GameObject target)
-    {
+    {   
+        mainCharacter= target;
         foreach (var bind in cameras)
         {
             if (bind.camera != null)
@@ -63,7 +80,8 @@ public class FakeDirector : MonoBehaviour
     }
 
     private void ActivateCamera(CinemachineCamera cam)
-    {
+    {   
+        SetTarget(mainCharacter);
         if (cam == null || cam == currentCamera)
             return;
 
@@ -76,4 +94,5 @@ public class FakeDirector : MonoBehaviour
         cam.Target.TrackingTarget = mainCharacter.transform;
         currentCamera = cam;
     }
+
 }

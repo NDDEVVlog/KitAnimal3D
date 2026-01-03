@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 7200211949133147697}
   - component: {fileID: 1984852956356233281}
   - component: {fileID: 7189511073177245525}
+  - component: {fileID: 2944581334513024198}
+  - component: {fileID: 2110054899616761932}
+  - component: {fileID: -2532737106275163786}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -27,9 +30,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3559544663919256112}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 37.832706, y: 5.15526, z: -6.91979}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 7.3316, y: 7.3316, z: 7.3316}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,3 +116,70 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.07953599
   m_Center: {x: -0.0005328916, y: 0.0014341027, z: 0.0010033734}
+--- !u!54 &2944581334513024198
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3559544663919256112}
+  serializedVersion: 5
+  m_Mass: 3
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2110054899616761932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3559544663919256112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb4aa1be325dc44810c91efd70c457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ball
+  _lifeTime: 10
+  _rb: {fileID: 2944581334513024198}
+--- !u!114 &-2532737106275163786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3559544663919256112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb2e12d5f72c5634eaa3cef8d9d9ce5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollisionManager
+  effects:
+  - rid: 180463996039331929
+  OnAllEffectsFinished:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 180463996039331929
+      type: {class: ApplyForceEffect, ns: , asm: Assembly-CSharp}
+      data:
+        customName: "L\u1EF1c \u0111\u1EA9y va ch\u1EA1m"
+        forceMagnitude: 20
+        boneIndex: 1

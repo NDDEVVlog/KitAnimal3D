@@ -15,8 +15,6 @@ public class ApplyForceEffect : ICollisionEffect
         
         if (ragdoll != null)
         {
-            // Bật Ragdoll ngay lập tức
-            ragdoll.Die(); 
 
             // 2. Xác định Rigidbody để đẩy
             // Nếu đụng trúng xương lẻ thì lấy xương đó, nếu đụng trúng cha thì lấy xương đầu tiên trong danh sách
