@@ -419,6 +419,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1318868204006697853, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
+      propertyPath: _uiManager
+      value: 
+      objectReference: {fileID: 1438618547}
+    - target: {fileID: 1318868204006697853, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
+      propertyPath: _startingNode
+      value: 
+      objectReference: {fileID: 562120299}
     - target: {fileID: 2155754604127087313, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3990884
@@ -463,47 +471,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jaguar_Jaguar@idle1_tan cong 2
       objectReference: {fileID: 0}
-    - target: {fileID: 3509032372776313792, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7940639946166955164, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3410005755898155111, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 407861618}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
---- !u!1 &407861617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3410005755898155111, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
+--- !u!114 &407861618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2609657840857563133, guid: 84a56bde021d67a44b156a2d5b62933b, type: 3}
   m_PrefabInstance: {fileID: 407861616}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &407861618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407861617}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
-  displayName: Jaguar_Jaguar@idle1_tan cong 2
-  toggleBehaviours: []
-  OnTurnBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTurnEnd:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &487283122
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,30 +667,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 655158264275069018, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_enabled
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: BeginTurn
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3464243901370531179, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
-      propertyPath: OnTurnBegin.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4971187225602107272, guid: 608b1f806ed747e45a7e4dcff274c9ba, type: 3}
@@ -1472,9 +1431,9 @@ MonoBehaviour:
         z: 14.34049
       Rotation:
         value:
-          x: -0.15372255
+          x: -0.15372257
           y: -0.22462286
-          z: -0.18537046
+          z: -0.18537049
           w: 0.9442202
     - Position:
         x: -24.080238
@@ -2376,8 +2335,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
   participants:
-  - {fileID: 1906951766}
   - {fileID: 407861618}
+  - {fileID: 1906951766}
   - {fileID: 1125338653}
   pickMode: 2
   avoidSameAsCurrent: 1
@@ -2481,10 +2440,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2721575930576176426, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3126618184002987631, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
       propertyPath: m_Name
       value: Lion
@@ -2497,14 +2452,6 @@ PrefabInstance:
       propertyPath: _startingNode
       value: 
       objectReference: {fileID: 745491462}
-    - target: {fileID: 4012859380242698193, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-      propertyPath: _stats.walkSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4012859380242698193, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-      propertyPath: _stats.sprintSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 7528368751474300141, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.2659347
@@ -2548,100 +2495,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3126618184002987631, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1906951766}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
---- !u!1 &1906951765 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3126618184002987631, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
+--- !u!114 &1906951766 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5556826706896457492, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
   m_PrefabInstance: {fileID: 1906951764}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1906951766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906951765}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
-  displayName: Lion
-  toggleBehaviours: []
-  OnTurnBegin:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1906951768}
-        m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1906951767}
-        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1906951767}
-        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
-        m_MethodName: BeginTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTurnEnd:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1906951767}
-        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
-        m_MethodName: EndTurn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1906951767 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4012859380242698193, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-  m_PrefabInstance: {fileID: 1906951764}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906951765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d0a58590ad4ba64baf977d55dd0f960, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!195 &1906951768 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 2721575930576176426, guid: d289dda00fb4a494fa715a18258d4f54, type: 3}
-  m_PrefabInstance: {fileID: 1906951764}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1912172451
 GameObject:
   m_ObjectHideFlags: 0

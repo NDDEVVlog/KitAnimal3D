@@ -422,6 +422,7 @@ GameObject:
   - component: {fileID: 5416160251375960848}
   - component: {fileID: 5083268449875702270}
   - component: {fileID: 1725840812443629758}
+  - component: {fileID: 5556826706896457492}
   m_Layer: 0
   m_Name: Lion
   m_TagString: Untagged
@@ -452,7 +453,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3126618184002987631}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
   m_Speed: 3.5
@@ -479,6 +480,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2799744dabc645bd5c60ae23fff7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DebugSpeed: 0
 --- !u!114 &4012859380242698193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +498,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats:
-    walkSpeed: 2
+    walkSpeed: 3
+    sprintSpeed: 10
+    swimSpeed: 0
     jumpHeight: 5
     jumpDuration: 1
     isDead: 0
@@ -503,6 +511,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0072ca9164a06034f9975ec444d6cb3d, type: 2}
   - {fileID: 11400000, guid: 19aaac2ea542fce48be375317147c311, type: 2}
   _currentControlMode: 1
+  _currentNode: {fileID: 0}
 --- !u!54 &5416160251375960848
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -565,6 +574,74 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.39342117, y: 0.6879754, z: 1.1300013}
   m_Center: {x: -0.030672073, y: 0.36399627, z: 0.10471082}
+--- !u!114 &5556826706896457492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3126618184002987631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
+  displayName: Lion
+  toggleBehaviours: []
+  OnTurnBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2721575930576176426}
+        m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 4012859380242698193}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 4012859380242698193}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: BeginTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTurnEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4012859380242698193}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: EndTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3247803222581003065
 GameObject:
   m_ObjectHideFlags: 0
