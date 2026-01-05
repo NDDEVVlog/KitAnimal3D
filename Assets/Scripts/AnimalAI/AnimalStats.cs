@@ -3,17 +3,21 @@ using UnityEngine;
 
 public enum ActionType
 {
-    None, // Mặc định: Không yêu cầu gì cả (hoặc hành động rỗng)
+    None, 
     Walk,
     Sprint,
     Jump,
-    Interact
+    Interact,
+    Swim // ADDED
 }
 
 [Serializable]
 public struct AnimalStats
 {
     [Min(0f)] public float walkSpeed;
+    [Min(0f)] public float sprintSpeed;
+    [Min(0f)] public float swimSpeed; // ADDED
+    
     [Min(0f)] public float jumpHeight;
     [Min(0f)] public float jumpDuration;
 
@@ -28,4 +32,5 @@ public static class AnimHash
     public static readonly int Die = Animator.StringToHash("Die");
     public static readonly int Interact = Animator.StringToHash("Interact");
     public static readonly int InteractionType = Animator.StringToHash("InteractionType");
+    public static readonly int Swim = Animator.StringToHash("Swim"); // ADDED
 }

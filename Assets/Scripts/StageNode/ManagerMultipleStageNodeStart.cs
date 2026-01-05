@@ -24,10 +24,11 @@ public class ManagerMultipleStageNodeStart : MonoBehaviour
     private  void Start()
     {
         // 1) Tắt hết brain lúc đầu
-        foreach (var ab in animalBrains)
-        {
-            if (ab != null) ab.enabled = false;
-        }
+        // Debug.Log("TurnOffBrain");
+        // foreach (var ab in animalBrains)
+        // {
+        //     if (ab != null) ab.enabled = false;
+        // }
     }
 
     public void OpenSelectUI_Event()

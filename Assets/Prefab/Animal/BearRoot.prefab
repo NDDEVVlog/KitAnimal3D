@@ -1547,9 +1547,10 @@ GameObject:
   - component: {fileID: 6840399817755385757}
   - component: {fileID: 5154141139464264209}
   - component: {fileID: 5366435680106667572}
+  - component: {fileID: 3464243901370531179}
   m_Layer: 0
   m_Name: BearRoot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1577,7 +1578,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5789251614945209418}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
   m_Speed: 3.5
@@ -1604,6 +1605,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2799744dabc645bd5c60ae23fff7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DebugSpeed: 0
 --- !u!114 &4971187225602107272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1617,8 +1623,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats:
-    walkSpeed: 5
-    sprintSpeed: 20
+    walkSpeed: 6
+    sprintSpeed: 12
+    swimSpeed: 0
     jumpHeight: 5
     jumpDuration: 1
     isDead: 0
@@ -1626,9 +1633,10 @@ MonoBehaviour:
   _uiManager: {fileID: 0}
   _availableMoves:
   - {fileID: 11400000, guid: c89fae42af7272a44bcf6b52bcb470e8, type: 2}
-  - {fileID: 11400000, guid: b51dbcbba7a061945ab7a3d06f4af881, type: 2}
   - {fileID: 11400000, guid: 72f49f9538e6bdf43a292cbe787b2379, type: 2}
   - {fileID: 11400000, guid: 0072ca9164a06034f9975ec444d6cb3d, type: 2}
+  _currentControlMode: 1
+  _currentNode: {fileID: 0}
 --- !u!136 &6840399817755385757
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1648,10 +1656,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.12376113
-  m_Height: 0.28
+  m_Radius: 0.87122726
+  m_Height: 1.7424545
   m_Direction: 1
-  m_Center: {x: 0, y: 0.11000001, z: 0.00573895}
+  m_Center: {x: 0, y: 0.5857862, z: 0.0031929016}
 --- !u!54 &5154141139464264209
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1693,6 +1701,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RagdollController
   ragdollRigidbodies: []
   ragdollColliders: []
+--- !u!114 &3464243901370531179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789251614945209418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
+  displayName: BearRoot
+  toggleBehaviours: []
+  OnTurnBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4971187225602107272}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: BeginTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4971187225602107272}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnTurnEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5911599237193406302
 GameObject:
   m_ObjectHideFlags: 0

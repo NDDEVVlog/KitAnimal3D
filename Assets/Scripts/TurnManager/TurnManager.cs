@@ -54,14 +54,16 @@ public class TurnManager : MonoBehaviour
     }
 
     public async void Start()
-    {
+    {   
+        
         await StartFirstTurn();
     }
 
     private void Update()
     {
         if (waitingForRandomInput && Input.GetKeyDown(nextTurnKey))
-        {
+        {   
+            Debug.Log("PressKey");
             waitingForRandomInput = false;
             ExecuteRandomNextTurn();
         }
@@ -140,6 +142,7 @@ public class TurnManager : MonoBehaviour
 
     private void ExecuteRandomNextTurn(bool ignoreCurrent = true)
     {   
+        Debug.Log("ExecuteNextRun");
         // Thêm kiểm tra an toàn
         if (participants == null || participants.Count == 0)
         {

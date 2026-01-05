@@ -7,10 +7,13 @@ using UnityEngine.Events;
 public class AnimalMotor : MonoBehaviour
 {
     private NavMeshAgent _agent;
-    private Animator _animator;
+    [SerializeField]private Animator _animator;
     private AnimalStats _stats;
 
     public UnityEvent DieEvent;
+
+    public float DebugSpeed;
+
     public void Initialize(AnimalStats stats)
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -27,57 +30,78 @@ public class AnimalMotor : MonoBehaviour
 
     private void Update()
     {
+        // Optimization: Only update animator if agent is actually active
         if (_agent.enabled)
         {
+            // Velocity magnitude involves a SquareRoot calculation. 
+            // It's generally fine, but good to be aware of in Update loops.
             _animator.SetFloat(AnimHash.Speed, _agent.velocity.magnitude);
+            DebugSpeed = _agent.velocity.magnitude;
         }
     }
 
     public async UniTask MoveTo(Vector3 target, float speed)
     {   
+        // Debug.Log("MoveTo"); // Removing Debug.Log in frequent actions helps FPS
         if(_stats.isDead) return;
 
-        // 1. Đảm bảo Agent được bật
         _agent.enabled = true;
 
-        // --- FIX BẮT ĐẦU: Xử lý trường hợp Agent bị mất NavMesh do Teleport/Slide ---
+        // --- Fix Logic: Ensure Agent is on NavMesh ---
         if (!_agent.isOnNavMesh)
         {
-            Debug.LogWarning($"Agent {name} không nằm trên NavMesh! Đang thử Warp...");
-            
-            // Tìm điểm NavMesh gần nhất trong bán kính 2m để gắn lại
-            UnityEngine.AI.NavMeshHit hit;
-            if (UnityEngine.AI.NavMesh.SamplePosition(transform.position, out hit, 2.0f, UnityEngine.AI.NavMesh.AllAreas))
+            Debug.LogWarning($"Agent {name} is off NavMesh! Attempting Warp...");
+            if (UnityEngine.AI.NavMesh.SamplePosition(transform.position, out var hit, 2.0f, UnityEngine.AI.NavMesh.AllAreas))
             {
-                _agent?.Warp(hit.position); // Gắn Agent vào vị trí hợp lệ
+                _agent.Warp(hit.position);
             }
             else
             {
-                Debug.LogError($"Không tìm thấy NavMesh nào gần {name} để di chuyển!");
-                return; // Thoát luôn để tránh lỗi crash "Resume"
+                Debug.LogError($"No NavMesh found near {name}!");
+                return;
             }
         }
-        // --- FIX KẾT THÚC ---
 
-        // 2. Setup di chuyển (Bây giờ gọi isStopped mới an toàn)
         _agent.isStopped = false; 
         _agent.speed = speed; 
-        
-        // 3. Set Destination
-
-        _agent?.SetDestination(target);
+        _agent.SetDestination(target);
 
         var token = this.GetCancellationTokenOnDestroy();
 
-        // Chờ đường đi được tính toán (PathPending)
-        await UniTask.WaitUntil(() => !_agent.isActiveAndEnabled || !_agent.pathPending, cancellationToken: token);
+        // --- OPTIMIZATION START ---
+        // Instead of UniTask.WaitUntil (which allocates a delegate and checks every frame with overhead),
+        // we use a manual while loop. This is much lighter on the CPU and GC.
 
-        // Chờ đến khi đến nơi
-        await UniTask.WaitUntil(() => 
+        // 1. Wait for Path Calculation (Prevent accessing remainingDistance while path is pending)
+        while (_agent.pathPending && !_agent.isStopped)
         {
-            if (_stats.isDead || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh) return true;
-            return _agent.remainingDistance <= _agent.stoppingDistance;
-        }, cancellationToken: token);
+            if (token.IsCancellationRequested || _stats.isDead) return;
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
+        }
+
+        // 2. Wait for Arrival
+        while (true)
+        {
+            // A. Check Lifecycle/Cancellation
+            if (token.IsCancellationRequested || _stats.isDead || this == null) return;
+            
+            // B. Check Agent Validity
+            if (!_agent.isActiveAndEnabled || !_agent.isOnNavMesh) break;
+
+            // C. Check Distance (Expensive native call, only do this if valid)
+            if (_agent.remainingDistance <= _agent.stoppingDistance)
+            {
+                // Double check: Ensure we aren't just stopped momentarily or lacking a path
+                if (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f)
+                {
+                    break; // Destination reached
+                }
+            }
+
+            // Yield execution to the next frame
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
+        }
+        // --- OPTIMIZATION END ---
 
         if (_stats.isDead || !_agent.isActiveAndEnabled || !_agent.isOnNavMesh) return;
 
@@ -129,5 +153,12 @@ public class AnimalMotor : MonoBehaviour
     {
         _agent.enabled = false;
         _animator.SetBool(AnimHash.Die, true);
+    }
+
+    public async UniTask PerformSwim(Vector3 target, float speed)
+    {
+        _animator.SetBool(AnimHash.Swim, true);
+        await MoveTo(target, speed);
+        _animator.SetBool(AnimHash.Swim, false);
     }
 }

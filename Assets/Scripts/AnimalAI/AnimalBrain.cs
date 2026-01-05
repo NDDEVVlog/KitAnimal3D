@@ -23,7 +23,6 @@ public class AnimalBrain : MonoBehaviour
         _motor = GetComponent<AnimalMotor>();
         _motor.Initialize(_stats);
         
-        // --- ADDED: Listen for death event from Motor ---
         if (_motor != null)
         {
             _motor.DieEvent.AddListener(OnDeath);
@@ -34,7 +33,6 @@ public class AnimalBrain : MonoBehaviour
 
     private void OnDestroy()
     {
-        // --- ADDED: Cleanup listener ---
         if (_motor != null)
         {
             _motor.DieEvent.RemoveListener(OnDeath);
@@ -43,20 +41,16 @@ public class AnimalBrain : MonoBehaviour
         _turnCts?.Dispose();
     }
 
-    // --- ADDED: Handle Death ---
     private void OnDeath()
     {
         Debug.Log($"[AnimalBrain] {name} died. Cancelling turn.");
         _stats.isDead = true;
-        
-        // This triggers the cancellation token passed to ExecuteGameLoop
-        // causing it to stop waiting for UI or movement immediately.
         _turnCts?.Cancel(); 
     }
 
     public void BeginTurn()
     {
-        if (_isRunningTurn || _stats.isDead) return; // Don't start if dead
+        if (_isRunningTurn || _stats.isDead) return;
 
         _isRunningTurn = true;
         
@@ -64,7 +58,6 @@ public class AnimalBrain : MonoBehaviour
         _turnCts?.Dispose();
         _turnCts = new CancellationTokenSource();
 
-        // Link with GameObject destruction to ensure safety if object is destroyed
         var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(
             _turnCts.Token, 
             this.GetCancellationTokenOnDestroy()
@@ -80,65 +73,85 @@ public class AnimalBrain : MonoBehaviour
     }
 
     private async UniTaskVoid ExecuteGameLoop(CancellationToken token)
-    {
-        try
+{
+    // FIX 1: Lưu tên lại trước khi chạy logic. 
+    // Nếu object bị destroy, biến string này vẫn tồn tại trong bộ nhớ RAM bình thường.
+    string myName = this.name; 
+
+    try 
+    {   
+        Debug.Log("Execute GameLoop");
+        while (_currentNode != null && 
+               !_currentNode.IsFinalNode && 
+               !_stats.isDead && 
+               !token.IsCancellationRequested)
         {
-            // --- UPDATED: Check !isDead in loop condition ---
-            while (_currentNode != null && 
-                   !_currentNode.IsFinalNode && 
-                   !_stats.isDead && 
-                   !token.IsCancellationRequested)
-            {
-                // If dead before selecting, stop immediately
-                if (_stats.isDead) break;
+            // ... (Phần logic giữ nguyên) ...
+            
+            if (_stats.isDead) break;
 
-                (NodeConnection connection, AnimalMoveData move) = await _uiManager.WaitForSelection(
-                    _currentNode.Position,
-                    _currentNode.Connections,
-                    _availableMoves,
-                    _currentControlMode,
-                    token
-                );
+            (NodeConnection connection, AnimalMoveData move) = await _uiManager.WaitForSelection(
+                _currentNode.Position,
+                _currentNode.Connections,
+                _availableMoves,
+                _currentControlMode,
+                token
+            );
 
-                StageNode targetNode = connection.GetResolvedTarget();
-                if (targetNode == null) continue;
+            StageNode targetNode = connection.GetResolvedTarget();
+            if (targetNode == null) continue;
 
-                await ProcessAction(connection, targetNode, move, token);
-                
-                // If died during movement, break loop
-                if (_stats.isDead || token.IsCancellationRequested) break;
+            await ProcessAction(connection, targetNode, move, token);
+            
+            if (_stats.isDead || token.IsCancellationRequested) break;
 
-                _currentNode = targetNode;
+            _currentNode = targetNode;
 
-                if (_currentNode is StageNodeEndPoint stageNodeEndPoint)
-                {   
-                    Debug.Log($"Reached EndPoint: {stageNodeEndPoint.name}. Invoking OnStageCompleted...");
-                    stageNodeEndPoint.OnStageCompleted?.Invoke();
-                }
+            if (_currentNode is StageNodeEndPoint stageNodeEndPoint)
+            {   
+                Debug.Log($"Reached EndPoint: {stageNodeEndPoint.name}. Invoking OnStageCompleted...");
+                stageNodeEndPoint.OnStageCompleted?.Invoke();
             }
         }
-        catch (OperationCanceledException)
+    }
+    catch (OperationCanceledException)
+    {
+        // FIX 2: Sử dụng 'myName' thay vì 'name'
+        Debug.Log($"[AnimalBrain] Turn execution cancelled for {myName}.");
+    }
+    catch (Exception ex)
+    {
+        // Nên có thêm catch Exception chung để bắt các lỗi khác không phải Cancel
+        // Kiểm tra xem object còn sống không trước khi log
+        if (this != null)
         {
-            // --- ADDED: Catch cancellation (Death or EndTurn) gracefully ---
-            Debug.Log($"[AnimalBrain] Turn execution cancelled for {name}.");
-        }
-        finally
-        {
-            _isRunningTurn = false;
+            Debug.LogException(ex);
         }
     }
+    finally
+    {
+        _isRunningTurn = false;
+    }
+}
 
     private async UniTask ProcessAction(NodeConnection connection, StageNode target, AnimalMoveData move, CancellationToken token)
     {
-        // Double check dead state before processing
         if (_stats.isDead) return;
 
-        float speed = _stats.walkSpeed * move.speedMultiplier;
+        // Determine Speed
+        float speed = _stats.walkSpeed; // Default
+        if (move.actionType == ActionType.Sprint) speed = _stats.sprintSpeed;
+        if (move.actionType == ActionType.Swim) speed = _stats.swimSpeed;
 
         switch (move.actionType)
         {
             case ActionType.Jump:
-                await _motor.PerformJump(target.Position); // Note: You might want to pass token to Motor methods too
+                await _motor.PerformJump(target.Position);
+                break;
+            
+            // ADDED: Swim Case
+            case ActionType.Swim:
+                await _motor.PerformSwim(target.Position, speed);
                 break;
 
             case ActionType.Interact:
@@ -154,6 +167,7 @@ public class AnimalBrain : MonoBehaviour
                 break;
 
             default:
+                // Walk or Sprint
                 await _motor.MoveTo(target.Position, speed);
                 break;
         }

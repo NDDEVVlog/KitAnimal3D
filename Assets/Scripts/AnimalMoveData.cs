@@ -6,7 +6,7 @@ public class AnimalMoveData : ScriptableObject
     public string moveName;
     public Sprite moveIcon;
     public ActionType actionType;
-    public float speedMultiplier = 1f;
+    // REMOVED: public float speedMultiplier = 1f;
 
     [Header("Constraints")]
     public float maxDistance = 100f;

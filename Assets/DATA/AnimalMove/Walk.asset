@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimalMoveData
   moveName: Walk
   moveIcon: {fileID: 21300000, guid: 0ce7d0aceef464c49bc1b5b6eb17a8be, type: 3}
-  actionType: 0
-  speedMultiplier: 1
+  actionType: 1
+  maxDistance: 100
+  maxInclineHeight: 2
+  maxDropHeight: 10

@@ -766,6 +766,7 @@ GameObject:
   - component: {fileID: 5301493269824934915}
   - component: {fileID: 1531147935769874071}
   - component: {fileID: 3921563497250525691}
+  - component: {fileID: 6820039345278550063}
   m_Layer: 0
   m_Name: RHINOCEROS_RHINOCEROS@2HitAttack_Take 001
   m_TagString: Player
@@ -783,7 +784,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 22.91, y: 4.16, z: -13.11}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.39189, y: 0.39189, z: 0.39189}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8275802240085297059}
@@ -819,7 +820,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4384041365247636883}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
   m_Speed: 3.5
@@ -846,6 +847,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2799744dabc645bd5c60ae23fff7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3453596117629951067}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7133977133320388013}
+        m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8001618511461530496}
+        m_TargetAssemblyTypeName: AnimalMotor, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  DebugSpeed: 0
 --- !u!114 &3453596117629951067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,6 +902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stats:
     walkSpeed: 5
+    sprintSpeed: 10
+    swimSpeed: 0
     jumpHeight: 5
     jumpDuration: 1
     isDead: 0
@@ -867,10 +911,10 @@ MonoBehaviour:
   _uiManager: {fileID: 0}
   _availableMoves:
   - {fileID: 11400000, guid: c89fae42af7272a44bcf6b52bcb470e8, type: 2}
-  - {fileID: 11400000, guid: b51dbcbba7a061945ab7a3d06f4af881, type: 2}
   - {fileID: 11400000, guid: 72f49f9538e6bdf43a292cbe787b2379, type: 2}
   - {fileID: 11400000, guid: 0072ca9164a06034f9975ec444d6cb3d, type: 2}
   _currentControlMode: 1
+  _currentNode: {fileID: 0}
 --- !u!54 &5301493269824934915
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -933,6 +977,86 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.7309752, z: 4.636611}
   m_Center: {x: 0, y: 0.92430353, z: 0.776855}
+--- !u!114 &6820039345278550063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4384041365247636883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
+  displayName: RHINOCEROS_RHINOCEROS@2HitAttack_Take 001
+  toggleBehaviours: []
+  OnTurnBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3453596117629951067}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: BeginTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3453596117629951067}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnTurnEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8001618511461530496}
+        m_TargetAssemblyTypeName: AnimalMotor, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3453596117629951067}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7133977133320388013}
+        m_TargetAssemblyTypeName: UnityEngine.AI.NavMeshAgent, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4407121371512179262
 GameObject:
   m_ObjectHideFlags: 0

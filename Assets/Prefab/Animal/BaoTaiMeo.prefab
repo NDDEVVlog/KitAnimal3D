@@ -913,6 +913,7 @@ GameObject:
   - component: {fileID: 7558078925535343294}
   - component: {fileID: 476729613682191623}
   - component: {fileID: 4070280237545974908}
+  - component: {fileID: 849192054241438604}
   m_Layer: 0
   m_Name: BaoTaiMeo
   m_TagString: Player
@@ -943,13 +944,13 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348597659818752977}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 280
   m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -970,6 +971,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f2799744dabc645bd5c60ae23fff7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DebugSpeed: 0
 --- !u!114 &7880706199940117473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,7 +989,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats:
-    walkSpeed: 5
+    walkSpeed: 2
+    sprintSpeed: 7
+    swimSpeed: 0
     jumpHeight: 5
     jumpDuration: 1
     isDead: 0
@@ -994,7 +1002,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b51dbcbba7a061945ab7a3d06f4af881, type: 2}
   - {fileID: 11400000, guid: 72f49f9538e6bdf43a292cbe787b2379, type: 2}
   - {fileID: 11400000, guid: 0072ca9164a06034f9975ec444d6cb3d, type: 2}
-  _currentControlMode: 0
+  _currentControlMode: 1
+  _currentNode: {fileID: 0}
 --- !u!136 &7558078925535343294
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1059,6 +1068,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RagdollController
   ragdollRigidbodies: []
   ragdollColliders: []
+--- !u!114 &849192054241438604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2348597659818752977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c446658ebb68ddd4fa9af3560da8150b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnParticipant
+  displayName: BearRoot
+  toggleBehaviours: []
+  OnTurnBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7880706199940117473}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7880706199940117473}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: BeginTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTurnEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7880706199940117473}
+        m_TargetAssemblyTypeName: AnimalBrain, Assembly-CSharp
+        m_MethodName: EndTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2920771418038869367
 GameObject:
   m_ObjectHideFlags: 0
